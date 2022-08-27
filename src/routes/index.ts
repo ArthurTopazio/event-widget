@@ -1,10 +1,10 @@
-import { ReactElement } from 'react';
 import EventWidget from '../pages/EventWidget';
 import Login from '../pages/Login';
 
 export enum RoutesNames {
   LOGIN = '/login',
-  EVENT_WIDGET = '/'
+  EVENT_WIDGET = '/',
+  ANY = '*'
 }
 
 export interface IRoute {
@@ -14,9 +14,9 @@ export interface IRoute {
 };
 
 export const publicRoutes: IRoute[] = [
-  { path: RoutesNames.LOGIN, element: Login }
+  { path: RoutesNames.LOGIN, element: Login },
 ];
 
 export const privateRoutes: IRoute[] = [
-  { path: RoutesNames.EVENT_WIDGET, element: EventWidget }
+  { path: RoutesNames.EVENT_WIDGET, element: EventWidget },
 ]; 
