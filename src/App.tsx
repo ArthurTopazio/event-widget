@@ -1,15 +1,18 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 import AppRouter from './components/AppRouter';
-import NavBar from './components/NavBar/NavBar';
+
+import NavBar from './components/NavBar';
+import { Layout } from 'antd';
+
+import './App.css';
 
 function App() {
   return (
-    <div className="App">
+    <Layout>
       <NavBar />
-      <AppRouter />
-    </div>
+      <Layout.Content>
+        <AppRouter />
+      </Layout.Content>
+    </Layout>
   );
 }
 
