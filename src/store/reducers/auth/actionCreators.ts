@@ -1,6 +1,7 @@
 import { AppDispatch } from './../../index';
 import { IUser } from '../../../models/IUsers';
 import { AuthActionsEnum, SetErrorAction, SetUserAction, SetIsLoadingAction, SetAuthAction } from './types';
+import axios from 'axios';
 
 export const AuthActionCreators = {
   setUser: (user: IUser): SetUserAction => ({ type: AuthActionsEnum.SetUser, payload: user }),
@@ -9,16 +10,30 @@ export const AuthActionCreators = {
   setIsAuth: (isAuth: boolean): SetAuthAction => ({ type: AuthActionsEnum.SetAuth, payload: isAuth }),
   login: (username: string, password: string) => async (dispatch: AppDispatch) => {
     try {
+      dispatch(AuthActionCreators.setIsLoading(true));
+      setTimeout(async () => {
 
-    } catch (e) {
+        const response = await axios.get<IUser[]>('./users.json');
+        const mockUsers = response.data.find(user => user.username === username && user.password === password)
 
+        if (mockUsers) {
+          localStorage.setItem('auth', 'true');
+          localStorage.setItem('username', mockUsers.username);
+          dispatch(AuthActionCreators.setIsAuth(true));
+          dispatch(AuthActionCreators.setUser(mockUsers));
+        } else {
+          dispatch(AuthActionCreators.setError('Incorrect name or password'));
+        }
+      }, 1000)
+
+    } catch (e: any) {
+      dispatch(AuthActionCreators.setError(e));
     }
   },
   logout: () => async (dispatch: AppDispatch) => {
-    try {
-
-    } catch (e) {
-
-    }
+    localStorage.removeItem('auth');
+    localStorage.removeItem('username');
+    dispatch(AuthActionCreators.setUser({} as IUser));
+    dispatch(AuthActionCreators.setIsAuth(false));
   }
 };
