@@ -1,9 +1,28 @@
 import { Button, DatePicker, Form, Input, Row, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
-import { FC } from 'react';
+import { Moment } from 'moment';
+import { FC, useState } from 'react';
+import { IEvent } from '../models/IEvent';
+import { IUser } from '../models/IUsers';
 import { rules } from '../utils/rules';
 
-const EventForm: FC = () => {
+interface EventFormTPD {
+  guests: IUser[]
+};
+
+const EventForm: FC<EventFormTPD> = ({ guests }) => {
+
+  const [event, setEvent] = useState<IEvent>({
+    author: '',
+    guest: '',
+    date: '',
+    description: ''
+  });
+
+  const selectDate = (date: Moment | null) => {
+    console.log(date);
+  }
+
   return (
     <Form>
       <Form.Item
@@ -11,25 +30,32 @@ const EventForm: FC = () => {
         name="description"
         rules={[rules.required('Please enter')]}
       >
-        <Input />
+        <Input
+          onChange={e => setEvent({ ...event, description: e.target.value })}
+          value={event.description}
+        />
       </Form.Item>
       <FormItem
         label="Event date"
         name="date"
         rules={[rules.required('Please enter')]}
       >
-        <DatePicker />
+        <DatePicker
+          onChange={(date) => selectDate(date)}
+        />
       </FormItem>
       <FormItem
         label="Guest"
         name="guest"
         rules={[rules.required('Please choose')]}
       >
-        <Select defaultValue={'Bob'}>
-          <Select.Option value={'Bob'}>Bob</Select.Option>
-          <Select.Option value={'Veronica'}>Veronica</Select.Option>
-          <Select.Option value={'Hanna'}>Hanna</Select.Option>
-          <Select.Option value={'Troy'}>Troy</Select.Option>
+        <Select onChange={(guest: string) => setEvent({ ...event, guest })}>
+          {guests.map(name =>
+            <Select.Option
+              key={name.username}
+              value={name.username}>
+              {name.username}
+            </Select.Option>)}
         </Select>
       </FormItem>
       <Row justify='end'>
