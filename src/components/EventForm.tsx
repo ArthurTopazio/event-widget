@@ -2,15 +2,18 @@ import { Button, DatePicker, Form, Input, Row, Select } from 'antd';
 import FormItem from 'antd/es/form/FormItem';
 import { Moment } from 'moment';
 import { FC, useState } from 'react';
+import { useTypedSelector } from '../hooks/useTypedSelector';
 import { IEvent } from '../models/IEvent';
 import { IUser } from '../models/IUsers';
+import { formatDate } from '../utils/date';
 import { rules } from '../utils/rules';
 
 interface EventFormTPD {
   guests: IUser[]
+  submit: (event: IEvent) => void
 };
 
-const EventForm: FC<EventFormTPD> = ({ guests }) => {
+const EventForm: FC<EventFormTPD> = ({ guests, submit }) => {
 
   const [event, setEvent] = useState<IEvent>({
     author: '',
@@ -20,11 +23,19 @@ const EventForm: FC<EventFormTPD> = ({ guests }) => {
   });
 
   const selectDate = (date: Moment | null) => {
-    console.log(date);
-  }
+    if (date) {
+      setEvent({ ...event, date: formatDate(date.toDate()) });
+    }
+  };
+
+  const user = useTypedSelector(state => state.auth.user);
+
+  const submitForm = () => {
+    submit({ ...event, author: user.username });
+  };
 
   return (
-    <Form>
+    <Form onFinish={submitForm}>
       <Form.Item
         label="Event name"
         name="description"
@@ -38,7 +49,7 @@ const EventForm: FC<EventFormTPD> = ({ guests }) => {
       <FormItem
         label="Event date"
         name="date"
-        rules={[rules.required('Please enter')]}
+        rules={[rules.required('Please enter'), rules.isDateAfter('Cant create event in past')]}
       >
         <DatePicker
           onChange={(date) => selectDate(date)}
