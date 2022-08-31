@@ -1,18 +1,16 @@
-import React, { FC } from 'react';
+import { FC } from 'react';
 
 import { Header } from 'antd/lib/layout/layout';
 import { Menu, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { RoutesNames } from '../routes';
 import { useTypedSelector } from '../hooks/useTypedSelector';
-import { useTypedDispatch } from '../hooks/useTypedDispatch';
-import { AuthActionCreators } from '../store/reducers/auth/actionCreators';
+import { useActions } from '../hooks/useActions';
 
 const NavBar: FC = () => {
 
   const router = useNavigate();
-  const dispatch = useTypedDispatch();
-
+  const { logout } = useActions();
   const { isAuth, user } = useTypedSelector(state => state.auth);
 
   return (
@@ -23,7 +21,7 @@ const NavBar: FC = () => {
           ? <Menu theme="dark" mode="horizontal">
             <div style={{ color: 'white' }}>{user.username}</div>
             <Menu.Item
-              onClick={() => dispatch(AuthActionCreators.logout())}
+              onClick={logout}
               key={1}
             >
               Logout
