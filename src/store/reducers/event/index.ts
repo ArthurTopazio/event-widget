@@ -1,10 +1,10 @@
-import { EventState, EventAction, EventsActionEnum } from "./type"
+import { EventState, EventAction, EventsActionEnum } from './type';
 
 
 const initialState: EventState = {
   guests: [],
   events: []
-}
+};
 
 export default function eventReducer(state = initialState, action: EventAction): EventState {
   switch (action.type) {

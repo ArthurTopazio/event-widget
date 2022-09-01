@@ -1,6 +1,7 @@
-import { Badge, BadgeProps, Calendar } from 'antd';
+import { Calendar } from 'antd';
 import { Moment } from 'moment';
-import React, { FC } from 'react';
+import { FC } from 'react';
+
 import { IEvent } from '../models/IEvent';
 import { formatDate } from '../utils/date';
 
@@ -8,11 +9,11 @@ interface EventCalendarTPD {
   event: IEvent[]
 }
 
-const EventCalendar: FC<EventCalendarTPD> = (props) => {
+const EventCalendar: FC<EventCalendarTPD> = ({ event }) => {
 
   const dateCellRender = (value: Moment) => {
     const formatedDate = formatDate(value.toDate());
-    const currentDayEvents = props.event.filter(event => event.date === formatedDate);
+    const currentDayEvents = event.filter(event => event.date === formatedDate);
     return (
       <div>
         {currentDayEvents.map((event, index) =>

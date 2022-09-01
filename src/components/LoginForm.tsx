@@ -1,15 +1,16 @@
 import { Button, Form, Input } from 'antd';
 import { FC, useState } from 'react';
-import { useActions } from '../hooks/useActions';
 
+import { useActions } from '../hooks/useActions';
 import { useTypedSelector } from '../hooks/useTypedSelector';
 import { rules } from '../utils/rules';
 
 const LoginForm: FC = () => {
+
   const { error, isLoading } = useTypedSelector(state => state.auth);
+  const { login } = useActions();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const { login } = useActions();
 
   const submit = () => {
     login(username, password);
@@ -23,14 +24,14 @@ const LoginForm: FC = () => {
       <Form.Item
         label="Username"
         name="username"
-        rules={[rules.required('Please enter')]}
+        rules={[rules.required('Please enter username')]}
       >
         <Input value={username} onChange={e => setUsername(e.target.value)} />
       </Form.Item>
       <Form.Item
         label="Password"
         name="password"
-        rules={[{ required: true, message: 'Please input your password!' }]}
+        rules={[{ required: true, message: 'Please input your password' }]}
       >
         <Input
           value={password}

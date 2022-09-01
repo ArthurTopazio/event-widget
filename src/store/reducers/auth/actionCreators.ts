@@ -1,7 +1,6 @@
 import { AppDispatch } from './../../index';
 import { IUser } from '../../../models/IUsers';
 import { AuthActionsEnum, SetErrorAction, SetUserAction, SetIsLoadingAction, SetAuthAction } from './types';
-import axios from 'axios';
 import UserService from '../../../api/UserService';
 
 export const AuthActionCreators = {

@@ -1,12 +1,14 @@
 import AppRouter from './components/AppRouter';
 import { useEffect } from 'react';
+
 import { useActions } from './hooks/useActions';
+import { IUser } from './models/IUsers';
 
 import NavBar from './components/NavBar';
 import { Layout } from 'antd';
 
 import './App.css';
-import { IUser } from './models/IUsers';
+
 
 function App() {
 
